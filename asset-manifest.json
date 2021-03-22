@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/analisis-vectorial-escom/static/css/main.64fd0aa5.chunk.css",
+    "main.js": "/analisis-vectorial-escom/static/js/main.94efb0ac.chunk.js",
+    "main.js.map": "/analisis-vectorial-escom/static/js/main.94efb0ac.chunk.js.map",
+    "runtime-main.js": "/analisis-vectorial-escom/static/js/runtime-main.e4aedd2d.js",
+    "runtime-main.js.map": "/analisis-vectorial-escom/static/js/runtime-main.e4aedd2d.js.map",
+    "static/js/2.3ae11213.chunk.js": "/analisis-vectorial-escom/static/js/2.3ae11213.chunk.js",
+    "static/js/2.3ae11213.chunk.js.map": "/analisis-vectorial-escom/static/js/2.3ae11213.chunk.js.map",
+    "static/js/3.3dbbfa13.chunk.js": "/analisis-vectorial-escom/static/js/3.3dbbfa13.chunk.js",
+    "static/js/3.3dbbfa13.chunk.js.map": "/analisis-vectorial-escom/static/js/3.3dbbfa13.chunk.js.map",
+    "index.html": "/analisis-vectorial-escom/index.html",
+    "static/css/main.64fd0aa5.chunk.css.map": "/analisis-vectorial-escom/static/css/main.64fd0aa5.chunk.css.map",
+    "static/js/2.3ae11213.chunk.js.LICENSE.txt": "/analisis-vectorial-escom/static/js/2.3ae11213.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e4aedd2d.js",
+    "static/js/2.3ae11213.chunk.js",
+    "static/css/main.64fd0aa5.chunk.css",
+    "static/js/main.94efb0ac.chunk.js"
+  ]
+}
