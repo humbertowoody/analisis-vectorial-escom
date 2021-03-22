@@ -39,9 +39,7 @@ class PrimerPrograma extends Component {
 
   logica = (brd: any) => {
     // Extraemos las variables del estado.
-    let { a, b, c, d, A, B, C, D, R } = this.state;
-
-    // console.log({A,B,C,D,R});
+    let { A, B, C, D, R } = this.state;
 
     // Suspendemos la actualización del chart.
     brd.suspendUpdate();
