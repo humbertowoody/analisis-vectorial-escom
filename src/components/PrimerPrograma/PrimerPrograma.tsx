@@ -127,7 +127,7 @@ class PrimerPrograma extends Component {
         <p>
           Programa que recibe los parámetros <code>a</code>, <code>b</code>, <code>c</code> y
           <code>d</code> enteros los cuales son aplicados a los vectores iniciales <code>A({CoordenadasIniciales.A[0]},{CoordenadasIniciales.A[1]})</code>,
-          <code>B({CoordenadasIniciales.B[0]},{CoordenadasIniciales.B[1]})</code>, <code>C({CoordenadasIniciales.C[0]},{CoordenadasIniciales.C[1]})</code> y <code>D({CoordenadasIniciales.D[0]},{CoordenadasIniciales.D[1]})</code>, correspondientemente, y
+          <code>B({CoordenadasIniciales.B[0]},{CoordenadasIniciales.B[1]})</code>, <code>C({CoordenadasIniciales.C[0]},{CoordenadasIniciales.C[1]})</code> y <code>D({CoordenadasIniciales.D[0]},{CoordenadasIniciales.D[1]})</code>, correspondientemente,
           se calcula la resultante (<code>R</code>) de todos ellos y se grafica.
         </p>
         <p>
