@@ -12,9 +12,17 @@
 
 .footer a {
   color: azure;
-  padding: 0.2em 0.4em;
+  padding: 5px;
   margin: 0;
   font-size: 85%;
-  background-color: rgba(27, 31, 35, 0.05);
+  /* background-color: rgba(27, 31, 35, 0.05); */
   border-radius: 3px;
+  border: 1px solid azure;
+  text-decoration: none;
+}
+
+footer a:hover {
+  transition: 0.3s;
+  background-color: azure;
+  color: #333;
 }

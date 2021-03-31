@@ -13,13 +13,14 @@ function App() {
     <div className="app">
       <div className="container">
         <BrowserRouter>
-          {/* <Navbar /> */}
-          <Route path='/:page' component={Navbar} />
+          <Route path='/analisis-vectorial-escom/:page' component={Navbar} />
           <Route exact path="/" component={Navbar} />
           <Route exact path="/" component={Presentacion} />
-          <Route exact path="/primer-programa" component={PrimerPrograma} />
-          <Route exact path="/segundo-programa" component={SegundoPrograma} />
-          <Route exact path="/acerca-de" component={AcercaDe} />
+          <Route exact path="/analisis-vectorial-escom" component={Navbar} />
+          <Route exact path="/analisis-vectorial-escom" component={Presentacion} />
+          <Route exact path="/analisis-vectorial-escom/primer-programa" component={PrimerPrograma} />
+          <Route exact path="/analisis-vectorial-escom/segundo-programa" component={SegundoPrograma} />
+          <Route exact path="/analisis-vectorial-escom/acerca-de" component={AcercaDe} />
         </BrowserRouter>
       </div>
       <Footer />

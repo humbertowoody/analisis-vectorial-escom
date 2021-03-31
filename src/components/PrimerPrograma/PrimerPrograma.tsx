@@ -32,11 +32,6 @@ class PrimerPrograma extends Component {
     R: [0, 0],
   }
 
-  // Constructor de la clase.
-  constructor(props: any) {
-    super(props);
-  }
-
   logica = (brd: any) => {
     // Extraemos las variables del estado.
     let { A, B, C, D, R } = this.state;
@@ -45,40 +40,40 @@ class PrimerPrograma extends Component {
     brd.suspendUpdate();
 
     // Graficamos las leyendas para cada vector.
-    let puntoA = brd.create('point', A, { size: 0, name: 'A' });
-    let puntoB = brd.create('point', B, { size: 0, name: 'B' });
-    let puntoC = brd.create('point', C, { size: 0, name: 'C' });
-    let puntoD = brd.create('point', D, { size: 0, name: 'D' });
-    let puntoR = brd.create('point', R, { size: 0, name: 'R' });
+    brd.create('point', A, { size: 0, name: 'A' });
+    brd.create('point', B, { size: 0, name: 'B' });
+    brd.create('point', C, { size: 0, name: 'C' });
+    brd.create('point', D, { size: 0, name: 'D' });
+    brd.create('point', R, { size: 0, name: 'R' });
 
     // Graficamos los vectores.
-    let vecA = brd.create('line', [[0, 0], A], {
+    brd.create('line', [[0, 0], A], {
       straightFirst: false,
       straightLast: false,
       lastArrow: true,
       strokeColor: 'blue',
       name: 'A'
     });
-    let vecB = brd.create('line', [[0, 0], B], {
+    brd.create('line', [[0, 0], B], {
       straightFirst: false,
       straightLast: false,
       lastArrow: true,
       strokeColor: 'blue'
     });
-    let vecC = brd.create('line', [[0, 0], C], {
+    brd.create('line', [[0, 0], C], {
       straightFirst: false,
       straightLast: false,
       lastArrow: true,
       strokeColor: 'blue'
     });
-    let vecD = brd.create('line', [[0, 0], D], {
+    brd.create('line', [[0, 0], D], {
       straightFirst: false,
       straightLast: false,
       lastArrow: true,
       strokeColor: 'blue'
     });
 
-    let resultante = brd.create('line', [[0, 0], R], {
+    brd.create('line', [[0, 0], R], {
       straightFirst: false,
       straightLast: false,
       lastArrow: true,
