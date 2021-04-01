@@ -4,10 +4,45 @@ import "./SegundoPrograma.css";
 import OrbitControls from "three-orbitcontrols";
 
 class SegundoPrograma extends Component {
+  // Ejemplos para probar programa más fácilmente.
+  private ejemplosPredefinidos = [
+    {
+      name: "Ejemplo 1",
+      vecU: new THREE.Vector3(2, 0, 4),
+      vecV: new THREE.Vector3(3, 8, 2),
+      vecW: new THREE.Vector3(9, 1, 6),
+    },
+    {
+      name: "Ejemplo 2",
+      vecU: new THREE.Vector3(1, 3, -2),
+      vecV: new THREE.Vector3(2, 1, 4),
+      vecW: new THREE.Vector3(-3, 1, 6),
+    },
+    {
+      name: "Ejemplo 3",
+      vecU: new THREE.Vector3(1, 1, 0),
+      vecV: new THREE.Vector3(-1, 4, 0),
+      vecW: new THREE.Vector3(2, 2, 2),
+    },
+    {
+      name: "Ejemplo 4",
+      vecU: new THREE.Vector3(3, 1, 1),
+      vecV: new THREE.Vector3(1, 4, 1),
+      vecW: new THREE.Vector3(1, 1, 5),
+    },
+    {
+      name: "Ejemplo 5",
+      vecU: new THREE.Vector3(0, 0, 4),
+      vecV: new THREE.Vector3(1, 3, 0),
+      vecW: new THREE.Vector3(2, 0, 0),
+    },
+  ];
+
+  // Initial state definition.
   state = {
-    vecU: new THREE.Vector3(1, 3, -2),
-    vecV: new THREE.Vector3(2, 1, 4),
-    vecW: new THREE.Vector3(-3, 1, 6),
+    vecU: new THREE.Vector3(),
+    vecV: new THREE.Vector3(),
+    vecW: new THREE.Vector3(),
     vecWV: new THREE.Vector3(),
     vecUW: new THREE.Vector3(),
     vecUV: new THREE.Vector3(),
@@ -15,6 +50,10 @@ class SegundoPrograma extends Component {
     productoCruzUV: new THREE.Vector3(),
     productoCruzVW: new THREE.Vector3(),
     productoCruzUW: new THREE.Vector3(),
+    name: "Gráfica",
+    inputType: "range",
+    minValue: -5,
+    maxValue: 5,
     area: 0,
     volumen: 0,
   };
@@ -217,6 +256,30 @@ class SegundoPrograma extends Component {
     animate();
   }
 
+  // Restablece el estado a sus valores por defecto.
+  restablecer = (e: any) => {
+    this.setState((state) => {
+      return {
+        vecU: new THREE.Vector3(),
+        vecV: new THREE.Vector3(),
+        vecW: new THREE.Vector3(),
+        vecWV: new THREE.Vector3(),
+        vecUW: new THREE.Vector3(),
+        vecUV: new THREE.Vector3(),
+        vecUVW: new THREE.Vector3(),
+        productoCruzUV: new THREE.Vector3(),
+        productoCruzVW: new THREE.Vector3(),
+        productoCruzUW: new THREE.Vector3(),
+        name: "Gráfica",
+        inputType: "range",
+        minValue: -5,
+        maxValue: 5,
+        area: 0,
+        volumen: 0,
+      };
+    });
+  };
+
   // Función que actualiza el estado con los valores en los campos.
   actualizarCampo = (e: any) => {
     this.setState((state) => {
@@ -228,9 +291,15 @@ class SegundoPrograma extends Component {
         nuevoEstado.vecU[e.target.name[1]] = Number(e.target.value);
       } else if (e.target.name[0] === "v") {
         nuevoEstado.vecV[e.target.name[1]] = Number(e.target.value);
-      } else {
+      } else if (e.target.name[0] === "w") {
         nuevoEstado.vecW[e.target.name[1]] = Number(e.target.value);
+      } else {
+        nuevoEstado[e.target.name] = e.target.value;
       }
+
+      // En estas llamadas asumimos que no vendrán de un ejemplo, por lo que
+      // regresamos al valor de "Gráfica".
+      nuevoEstado.name = "Gráfica";
 
       // Calculamos los vectores resultantes de los vértices del paralelepípedo.
       nuevoEstado.vecWV.addVectors(nuevoEstado.vecW, nuevoEstado.vecV);
@@ -271,6 +340,66 @@ class SegundoPrograma extends Component {
     });
   };
 
+  // Función para activar ejemplo.
+  activarEjemplo = (e: any) => {
+    const ejemploEncontrado = this.ejemplosPredefinidos.find(
+      (ejemploActual) => ejemploActual.name === e.target.name
+    );
+
+    // Si encontramos el ejemplo buscado, colocamos el estado correspondiente.
+    if (ejemploEncontrado) {
+      this.setState((estadoAnterior) => {
+        // Creamos el nuevo estado.
+        const nuevoEstado: any = { ...estadoAnterior, ...ejemploEncontrado };
+
+        // Calculamos los vectores resultantes de los vértices del paralelepípedo.
+        nuevoEstado.vecWV.addVectors(nuevoEstado.vecW, nuevoEstado.vecV);
+        nuevoEstado.vecUW.addVectors(nuevoEstado.vecU, nuevoEstado.vecW);
+        nuevoEstado.vecUV.addVectors(nuevoEstado.vecU, nuevoEstado.vecV);
+        nuevoEstado.vecUVW.addVectors(nuevoEstado.vecU, nuevoEstado.vecV);
+        nuevoEstado.vecUVW.add(nuevoEstado.vecW);
+
+        // Calculamos los producto cruz pertinentes para cálculos.
+        nuevoEstado.productoCruzUV.crossVectors(
+          nuevoEstado.vecU,
+          nuevoEstado.vecV
+        );
+        nuevoEstado.productoCruzVW.crossVectors(
+          nuevoEstado.vecV,
+          nuevoEstado.vecW
+        );
+        nuevoEstado.productoCruzUW.crossVectors(
+          nuevoEstado.vecU,
+          nuevoEstado.vecW
+        );
+
+        // Calculamos el área.
+        nuevoEstado.area =
+          2 * Math.abs(nuevoEstado.productoCruzUV.length()) +
+          2 * Math.abs(nuevoEstado.productoCruzVW.length()) +
+          2 * Math.abs(nuevoEstado.productoCruzUW.length());
+
+        // Calculamos el volumen.
+        nuevoEstado.volumen = Math.abs(
+          nuevoEstado.vecW.dot(nuevoEstado.productoCruzUV)
+        );
+
+        // Actualizamos el estado.
+        return {
+          ...nuevoEstado,
+        };
+      });
+    } else {
+      this.setState((estadoAnterior) => {
+        return {
+          ...estadoAnterior,
+          name: "Gráfica",
+        };
+      });
+    }
+  };
+
+  // Función principal de renderizado de página web.
   render() {
     return (
       <div className="segundo-programa">
@@ -295,88 +424,172 @@ class SegundoPrograma extends Component {
           </ul>
         </p>
         <hr />
-        <p>Valores para el programa:</p>
+        <p>Tipo de entrada:</p>
         <p>
-          <code>u</code> = (
+          <div onChange={this.actualizarCampo}>
+            <input
+              checked={this.state.inputType === "range"}
+              type="radio"
+              name="inputType"
+              id="inputType"
+              value={"range"}
+            />{" "}
+            Slider
+            <input
+              checked={this.state.inputType === "number"}
+              type="radio"
+              name="inputType"
+              id="inputType"
+              value={"number"}
+            />{" "}
+            Numérico
+          </div>
+        </p>
+        <p>Rango de valores para entradas:</p>
+        <p>
+          Mínimo:{" "}
           <input
             type="number"
+            name="minValue"
+            id="minValue"
+            value={this.state.minValue}
+            onChange={this.actualizarCampo}
+          />
+          , Máximo:{" "}
+          <input
+            type="number"
+            name="maxValue"
+            id="maxValue"
+            value={this.state.maxValue}
+            onChange={this.actualizarCampo}
+          />
+          ,<button onClick={this.restablecer}>Reestablecer</button>
+        </p>
+        <p>Valores para el programa:</p>
+        <p>
+          <code>u</code> = (x:
+          <input
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="ux"
             id="ux"
             value={this.state.vecU.x}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , y:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="uy"
             id="uy"
             value={this.state.vecU.y}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , z:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="uz"
             id="uz"
             value={this.state.vecU.z}
             onChange={this.actualizarCampo}
           />
-          )
+          ) = (<code>{this.state.vecU.x}</code>,<code>{this.state.vecU.y}</code>
+          ,<code>{this.state.vecU.z}</code>)
         </p>
         <p>
-          <code>v</code> = (
+          <code>v</code> = (x:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="vx"
             id="vx"
             value={this.state.vecV.x}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , y:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="vy"
             id="vy"
             value={this.state.vecV.y}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , z:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="vz"
             id="vz"
             value={this.state.vecV.z}
             onChange={this.actualizarCampo}
           />
-          )
+          ) = (<code>{this.state.vecV.x}</code>,<code>{this.state.vecV.y}</code>
+          ,<code>{this.state.vecV.z}</code>)
         </p>
         <p>
-          <code>w</code> = (
+          <code>w</code> = (x:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="wx"
             id="wx"
             value={this.state.vecW.x}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , y:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="wy"
             id="wy"
             value={this.state.vecW.y}
             onChange={this.actualizarCampo}
           />
-          ,{" "}
+          , z:
           <input
-            type="number"
+            type={this.state.inputType}
+            min={this.state.minValue}
+            max={this.state.maxValue}
+            step={0.1}
             name="wz"
             id="wz"
             value={this.state.vecW.z}
             onChange={this.actualizarCampo}
           />
-          )
+          ) = (<code>{this.state.vecW.x}</code>,<code>{this.state.vecW.y}</code>
+          ,<code>{this.state.vecW.z}</code>)
         </p>
+        <p>
+          <strong>Ejemplos predefinidos</strong>
+        </p>
+        <p>
+          <i>
+            Puedes utilizar alguno de los ejemplos predefinidos a continuación:
+          </i>
+        </p>
+        {this.ejemplosPredefinidos.map((ejemploPredefinido) => (
+          <button onClick={this.activarEjemplo} name={ejemploPredefinido.name}>
+            {ejemploPredefinido.name}
+          </button>
+        ))}
         <hr></hr>
         <p>
           <strong>Salidas:</strong>
@@ -393,52 +606,78 @@ class SegundoPrograma extends Component {
               <strong>Vectores complementarios</strong>:
               <ul>
                 <li>
-                  <code>u+v</code>: ({this.state.vecUV.x},{this.state.vecUV.y},
-                  {this.state.vecUV.z})
+                  <strong>u+v</strong>: (<code>{this.state.vecUV.x}</code>,
+                  <code>{this.state.vecUV.y}</code>,
+                  <code>{this.state.vecUV.z}</code>)
                 </li>
                 <li>
-                  <code>w+v</code>: ({this.state.vecWV.x},{this.state.vecWV.y},
-                  {this.state.vecWV.z})
+                  <strong>w+v</strong>: (<code>{this.state.vecWV.x}</code>,
+                  <code>{this.state.vecWV.y}</code>,
+                  <code>{this.state.vecWV.z}</code>)
                 </li>
                 <li>
-                  <code>u+w</code>: ({this.state.vecUW.x},{this.state.vecUW.y},
-                  {this.state.vecUW.z})
+                  <strong>u+w</strong>: (<code>{this.state.vecUW.x}</code>,
+                  <code>{this.state.vecUW.y}</code>,
+                  <code>{this.state.vecUW.z}</code>)
                 </li>
                 <li>
-                  <code>u+v+w</code>: ({this.state.vecUVW.x},
-                  {this.state.vecUVW.y},{this.state.vecUVW.z})
+                  <strong>u+v+w</strong>: (<code>{this.state.vecUVW.x}</code>,
+                  <code>{this.state.vecUVW.y}</code>,
+                  <code>{this.state.vecUVW.z}</code>)
                 </li>
                 <li>
-                  <code>u×v</code>: ({this.state.productoCruzUV.x},
-                  {this.state.productoCruzUV.y},{this.state.productoCruzUV.z})
+                  <strong>u×v</strong>: (
+                  <code>{this.state.productoCruzUV.x}</code>,
+                  <code>{this.state.productoCruzUV.y}</code>,
+                  <code>{this.state.productoCruzUV.z}</code>)
                 </li>
                 <li>
-                  <code>v×w</code>: ({this.state.productoCruzVW.x},
-                  {this.state.productoCruzVW.y},{this.state.productoCruzVW.z})
+                  <strong>v×w</strong>: (
+                  <code>{this.state.productoCruzVW.x}</code>,
+                  <code>{this.state.productoCruzVW.y}</code>,
+                  <code>{this.state.productoCruzVW.z}</code>)
                 </li>
                 <li>
-                  <code>u×w</code>: ({this.state.productoCruzUW.x},
-                  {this.state.productoCruzUW.y},{this.state.productoCruzUW.z})
+                  <strong>u×w</strong>: (
+                  <code>{this.state.productoCruzUW.x}</code>,
+                  <code>{this.state.productoCruzUW.y}</code>,
+                  <code>{this.state.productoCruzUW.z}</code>)
                 </li>
               </ul>
             </li>
           </ul>
-          <strong>Gráfica:</strong>
+          <strong>{this.state.name}:</strong>
           <ul>
             <li>
-              <strong>X</strong>: eje rojo.
+              <strong>Eje x</strong>: eje rojo.
             </li>
             <li>
-              <strong>Y</strong>: eje azul.
+              <strong>Eje y</strong>: eje azul.
             </li>
             <li>
-              <strong>Z</strong>: eje verde.
+              <strong>Eje z</strong>: eje verde.
+            </li>
+            <li>
+              <strong>u</strong>=(<code>{this.state.vecU.x}</code>,
+              <code>{this.state.vecU.y}</code>,<code>{this.state.vecU.z}</code>
+              ).
+            </li>
+            <li>
+              <strong>v</strong>=(<code>{this.state.vecV.x}</code>,
+              <code>{this.state.vecV.y}</code>,<code>{this.state.vecV.z}</code>
+              ).
+            </li>
+            <li>
+              <strong>w</strong>=(<code>{this.state.vecW.x}</code>,
+              <code>{this.state.vecW.y}</code>,<code>{this.state.vecW.z}</code>
+              ).
             </li>
           </ul>
         </p>
         <div id="grafica-programa-2">
           <i>
-            (Modifica los valores de los vectores para comenzar con el render)
+            (Modifica los valores de los vectores o selecciona un ejemplo para
+            comenzar con el render)
           </i>
         </div>
       </div>

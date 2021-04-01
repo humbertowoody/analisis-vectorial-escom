@@ -1,0 +1,42 @@
+# Pruebas Programa #2
+
+- Primer prueba
+  - Vectores:
+    - 2 0 4
+    - 3 8 2
+    - 9 1 6
+  - Salidas:
+    - Área: 288.002
+    - Volumen: 184.22
+- Segunda prueba
+  - Vectores:
+    - 1 3 -2
+    - 2 1 4
+    - -3 1 6
+  - Salidas:
+    - Área: 127.67
+    - Volumen: 80.003
+- Tercer prueba
+  - Vectores:
+    - 1 1 0
+    - -1 4 0
+    - 2 2 2
+  - Salidas:
+    - Área: 41.57
+    - Volumen: 10.12
+- Cuarta prueba
+  - Vectores:
+    - 3 1 1
+    - 1 4 1
+    - 1 1 5
+  - Salidas:
+    - Área: 91.839
+    - Volumen: 50.1554
+- Quinta prueba
+  - Vectores:
+    - 0 0 4
+    - 1 3 0
+    - 2 0 0
+  - Salidas:
+    - Área: 53.29
+    - Volumen: 24.1213

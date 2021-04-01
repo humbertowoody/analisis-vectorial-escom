@@ -2,6 +2,22 @@
   padding: 15px;
 }
 
+.segundo-programa button {
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin: 0px 10px;
+  font-family: "Montserrat";
+  background-color: white;
+  font-size: 1em;
+  padding: 5px;
+}
+
+.segundo-programa button:hover {
+  background-color: #333;
+  animation: 0.5s;
+  color: azure;
+}
+
 #grafica-programa-2 {
   display: flex;
   justify-content: center;
