@@ -4,3 +4,19 @@
   align-items: center;
   padding: 10px;
 }
+
+hr {
+  width: 100%;
+  color: #333;
+}
+
+.estilo-1 {
+  width: 50%;
+  height: 0;
+  padding-bottom: 45%;
+  position: relative;
+}
+
+.estilo-2 {
+  position: absolute;
+}

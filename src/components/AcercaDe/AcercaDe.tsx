@@ -42,6 +42,7 @@ class AcercaDe extends Component {
             <strong>Semestre</strong>: Febrero - Junio, 2021
           </li>
         </ul>
+        <hr></hr>
         <h2>Código Fuente</h2>
         <p>
           Si detectas que existe algún error, no dudes en reportar el{" "}
@@ -50,6 +51,17 @@ class AcercaDe extends Component {
         <a href="https://github.com/humbertowoody/analisis-vectorial-escom">
           https://github.com/humbertowoody/analisis-vectorial-escom
         </a>
+        <div className="estilo-1">
+          <iframe
+            title="GIF Mágico"
+            src="https://giphy.com/embed/3o7WIxxI7tLStjR2p2"
+            width="100%"
+            height="100%"
+            className="estilo-2 giphy-embed"
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        </div>
       </div>
     );
   }
