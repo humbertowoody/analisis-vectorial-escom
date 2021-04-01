@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/analisis-vectorial-escom/static/css/main.737d508d.chunk.css",
-    "main.js": "/analisis-vectorial-escom/static/js/main.b515f49a.chunk.js",
-    "main.js.map": "/analisis-vectorial-escom/static/js/main.b515f49a.chunk.js.map",
+    "main.css": "/analisis-vectorial-escom/static/css/main.3fc1f335.chunk.css",
+    "main.js": "/analisis-vectorial-escom/static/js/main.0c8f86ef.chunk.js",
+    "main.js.map": "/analisis-vectorial-escom/static/js/main.0c8f86ef.chunk.js.map",
     "runtime-main.js": "/analisis-vectorial-escom/static/js/runtime-main.a525919f.js",
     "runtime-main.js.map": "/analisis-vectorial-escom/static/js/runtime-main.a525919f.js.map",
-    "static/js/2.7a27c84b.chunk.js": "/analisis-vectorial-escom/static/js/2.7a27c84b.chunk.js",
-    "static/js/2.7a27c84b.chunk.js.map": "/analisis-vectorial-escom/static/js/2.7a27c84b.chunk.js.map",
+    "static/js/2.c0ea6358.chunk.js": "/analisis-vectorial-escom/static/js/2.c0ea6358.chunk.js",
+    "static/js/2.c0ea6358.chunk.js.map": "/analisis-vectorial-escom/static/js/2.c0ea6358.chunk.js.map",
     "static/js/3.3953fe08.chunk.js": "/analisis-vectorial-escom/static/js/3.3953fe08.chunk.js",
     "static/js/3.3953fe08.chunk.js.map": "/analisis-vectorial-escom/static/js/3.3953fe08.chunk.js.map",
     "index.html": "/analisis-vectorial-escom/index.html",
-    "static/css/main.737d508d.chunk.css.map": "/analisis-vectorial-escom/static/css/main.737d508d.chunk.css.map",
-    "static/js/2.7a27c84b.chunk.js.LICENSE.txt": "/analisis-vectorial-escom/static/js/2.7a27c84b.chunk.js.LICENSE.txt"
+    "static/css/main.3fc1f335.chunk.css.map": "/analisis-vectorial-escom/static/css/main.3fc1f335.chunk.css.map",
+    "static/js/2.c0ea6358.chunk.js.LICENSE.txt": "/analisis-vectorial-escom/static/js/2.c0ea6358.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a525919f.js",
-    "static/js/2.7a27c84b.chunk.js",
-    "static/css/main.737d508d.chunk.css",
-    "static/js/main.b515f49a.chunk.js"
+    "static/js/2.c0ea6358.chunk.js",
+    "static/css/main.3fc1f335.chunk.css",
+    "static/js/main.0c8f86ef.chunk.js"
   ]
 }
