@@ -10619,6 +10619,11 @@ text-table@0.2.0, text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+three-css2drenderer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/three-css2drenderer/-/three-css2drenderer-1.0.0.tgz#1f3575be6568c653a1b36505dc27704820d6a4c3"
+  integrity sha512-KbWEOZiM5hXof0BSeSP6fiifIDdW2/ON3Ht/vdUhduy8sduEjFeoTRXx75dfCmXV4d5bcCqNzwMqnwwOZHb6Zw==
+
 three-orbitcontrols@^2.110.3:
   version "2.110.3"
   resolved "https://registry.yarnpkg.com/three-orbitcontrols/-/three-orbitcontrols-2.110.3.tgz#ca9c91d5ec2f4731a1140acf2ff0281e15988edf"

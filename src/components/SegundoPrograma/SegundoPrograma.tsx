@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as THREE from "three";
 import "./SegundoPrograma.css";
 import OrbitControls from "three-orbitcontrols";
+import { CSS2DRenderer, CSS2DObject } from "three-css2drenderer";
 
 class SegundoPrograma extends Component {
   // Ejemplos para probar programa más fácilmente.
@@ -52,10 +53,28 @@ class SegundoPrograma extends Component {
     productoCruzUW: new THREE.Vector3(),
     name: "Gráfica",
     inputType: "range",
+    etiquetasVectoresActivadas: true,
+    etiquetasEjesActivadas: true,
+    etiquetasCoordenadasActivadas: true,
     minValue: -5,
     maxValue: 5,
     area: 0,
     volumen: 0,
+  };
+
+  crearEtiqueta = (
+    nombre: string,
+    x: number,
+    y: number,
+    z: number,
+    clase?: string
+  ) => {
+    const divEtiqueta = document.createElement("div");
+    divEtiqueta.className = clase || "label";
+    divEtiqueta.textContent = nombre;
+    const etiqueta = new CSS2DObject(divEtiqueta);
+    etiqueta.position.set(x, z, y);
+    return etiqueta;
   };
 
   // Cada que se actualiza el estado, por ejemplo con la modificación del valor
@@ -202,16 +221,6 @@ class SegundoPrograma extends Component {
     // Escena de ThreeJS
     var scene = new THREE.Scene();
 
-    // Renderer.
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.8);
-    const elemento = document.getElementById("grafica-programa-2");
-    // Eliminamos la gráfica anterior si ya existe.
-    if (elemento?.hasChildNodes()) {
-      elemento.innerHTML = "";
-    }
-    elemento?.appendChild(renderer.domElement);
-
     // Cámara
     let camera = new THREE.PerspectiveCamera(
       75,
@@ -221,17 +230,25 @@ class SegundoPrograma extends Component {
     );
     camera.position.y = 5;
     camera.position.z = 15;
+    camera.updateProjectionMatrix();
 
-    // Controles de la cámara.
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.reset();
+    // Calculamos el tamaño mínimo del grid.
+    let min: number = 10;
+
+    if (vecUVW.x > min) {
+      min = vecUVW.x + 1;
+    } else if (vecUVW.y > min) {
+      min = vecUVW.y + 1;
+    } else if (vecUVW.z > min) {
+      min = vecUVW.z + 1;
+    }
 
     // Dibujar los ejes.
-    const ejes = new THREE.AxesHelper(20);
+    const ejes = new THREE.AxesHelper(min);
     scene.add(ejes);
 
     // Dibujar el grid.
-    const grid = new THREE.GridHelper(40, 40);
+    const grid = new THREE.GridHelper(min * 2, min * 2);
     scene.add(grid);
 
     // Geometría
@@ -248,10 +265,137 @@ class SegundoPrograma extends Component {
     let paralelepipedo = new THREE.Mesh(geometry, material);
     scene.add(paralelepipedo);
 
+    // Etiquetas.
+
+    // Verificamos si están activadas las etiquetas en los ejes.
+    if (this.state.etiquetasEjesActivadas) {
+      // Eje x.
+      const etiquetaEjeX = this.crearEtiqueta("x", min, 0, 0, "label-eje");
+      paralelepipedo.add(etiquetaEjeX);
+
+      // Eje y.
+      const etiquetaEjeY = this.crearEtiqueta("y", 0, min, 0, "label-eje");
+      paralelepipedo.add(etiquetaEjeY);
+
+      // Eje z.
+      const etiquetaEjeZ = this.crearEtiqueta("z", 0, 0, min, "label-eje");
+      paralelepipedo.add(etiquetaEjeZ);
+    }
+
+    // Verificamos si están activadas las etiquetas en los vectores.
+    if (this.state.etiquetasVectoresActivadas) {
+      // Vector u
+      const etiquetaVecU = this.crearEtiqueta("u", vecU.x, vecU.y, vecU.z);
+      paralelepipedo.add(etiquetaVecU);
+
+      // Vector v
+      const etiquetaVecV = this.crearEtiqueta("v", vecV.x, vecV.y, vecV.z);
+      paralelepipedo.add(etiquetaVecV);
+
+      // Vector w
+      const etiquetaVecW = this.crearEtiqueta("w", vecW.x, vecW.y, vecW.z);
+      paralelepipedo.add(etiquetaVecW);
+
+      // Vector w+v
+      const etiquetaVecWV = this.crearEtiqueta(
+        "w+v",
+        vecWV.x,
+        vecWV.y,
+        vecWV.z
+      );
+      paralelepipedo.add(etiquetaVecWV);
+
+      // Vector u+w
+      const etiquetaVecUW = this.crearEtiqueta(
+        "u+w",
+        vecUW.x,
+        vecUW.y,
+        vecUW.z
+      );
+      paralelepipedo.add(etiquetaVecUW);
+
+      // Vector u+v
+      const etiquetaVecUV = this.crearEtiqueta(
+        "u+v",
+        vecUV.x,
+        vecUV.y,
+        vecUV.z
+      );
+      paralelepipedo.add(etiquetaVecUV);
+
+      // Vector u+v+w
+      const etiquetaVecUVW = this.crearEtiqueta(
+        "u+v+w",
+        vecUVW.x,
+        vecUVW.y,
+        vecUVW.z
+      );
+      paralelepipedo.add(etiquetaVecUVW);
+    }
+
+    // Verificamos si están activadas las etiquetas en las coordenadas.
+    if (this.state.etiquetasCoordenadasActivadas) {
+      // Números en los ejes.
+      for (let index = 1; index < min; index++) {
+        const etiquetaNumX = this.crearEtiqueta(
+          String(index),
+          index,
+          0,
+          0,
+          "label-eje-numero"
+        );
+        const etiquetaNumY = this.crearEtiqueta(
+          String(index),
+          0,
+          index,
+          0,
+          "label-eje-numero"
+        );
+        const etiquetaNumZ = this.crearEtiqueta(
+          String(index),
+          0,
+          0,
+          index,
+          "label-eje-numero"
+        );
+        paralelepipedo.add(etiquetaNumX);
+        paralelepipedo.add(etiquetaNumY);
+        paralelepipedo.add(etiquetaNumZ);
+      }
+    }
+
+    // Div para gráfica.
+    const elemento = document.getElementById("grafica-programa-2");
+
+    // Eliminamos la gráfica anterior si ya existe.
+    if (elemento?.hasChildNodes()) {
+      elemento.innerHTML = "";
+    }
+
+    // Renderers
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.8);
+
+    const labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.8);
+    labelRenderer.domElement.style.position = "absolute";
+    // labelRenderer.domElement.style.top = "0";
+    labelRenderer.domElement.style.outline = "none";
+
+    // Añadimos los divs.
+    elemento?.appendChild(renderer.domElement);
+    elemento?.appendChild(labelRenderer.domElement);
+
+    // Controles de la cámara.
+    const controls = new OrbitControls(camera, labelRenderer.domElement);
+    controls.reset();
+
     // Animación
     const animate = () => {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
+      labelRenderer.render(scene, camera);
     };
     animate();
   }
@@ -272,6 +416,9 @@ class SegundoPrograma extends Component {
         productoCruzUW: new THREE.Vector3(),
         name: "Gráfica",
         inputType: "range",
+        etiquetasVectoresActivadas: true,
+        etiquetasEjesActivadas: true,
+        etiquetasCoordenadasActivadas: true,
         minValue: -5,
         maxValue: 5,
         area: 0,
@@ -399,6 +546,23 @@ class SegundoPrograma extends Component {
     }
   };
 
+  // Función para cambiar el estado de una etiqueta.
+  cambiarEstadoEtiqueta = (e: any) => {
+    // Actualizamos el estado.
+    this.setState((estadoAnterior) => {
+      // Copiamos el estado.
+      const nuevoEstado: any = estadoAnterior;
+
+      // Negamos el valor presente en la bandera.
+      nuevoEstado[e.target.name] = !nuevoEstado[e.target.name];
+
+      // Regresamos el estado.
+      return {
+        ...nuevoEstado,
+      };
+    });
+  };
+
   // Función principal de renderizado de página web.
   render() {
     return (
@@ -464,6 +628,37 @@ class SegundoPrograma extends Component {
             onChange={this.actualizarCampo}
           />
           ,<button onClick={this.restablecer}>Reestablecer</button>
+        </p>
+        <p>Etiquetas activadas:</p>
+        <p>
+          <input
+            type="checkbox"
+            name="etiquetasVectoresActivadas"
+            id="etiquetasVectoresActivadas"
+            checked={this.state.etiquetasVectoresActivadas}
+            onChange={this.cambiarEstadoEtiqueta}
+          />{" "}
+          Etiquetas en vectores.
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            name="etiquetasCoordenadasActivadas"
+            id="etiquetasCoordenadasActivadas"
+            checked={this.state.etiquetasCoordenadasActivadas}
+            onChange={this.cambiarEstadoEtiqueta}
+          />{" "}
+          Etiquetas en coordenadas.
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            name="etiquetasEjesActivadas"
+            id="etiquetasEjesActivadas"
+            checked={this.state.etiquetasEjesActivadas}
+            onChange={this.cambiarEstadoEtiqueta}
+          />{" "}
+          Etiquetas en ejes.
         </p>
         <p>Valores para el programa:</p>
         <p>
@@ -603,6 +798,29 @@ class SegundoPrograma extends Component {
               unidades cúbicas.
             </li>
             <li>
+              <strong>Vectores originales</strong>:
+              <ul>
+                <li>
+                  <strong>u</strong>=(<code>{this.state.vecU.x}</code>,
+                  <code>{this.state.vecU.y}</code>,
+                  <code>{this.state.vecU.z}</code>
+                  ).
+                </li>
+                <li>
+                  <strong>v</strong>=(<code>{this.state.vecV.x}</code>,
+                  <code>{this.state.vecV.y}</code>,
+                  <code>{this.state.vecV.z}</code>
+                  ).
+                </li>
+                <li>
+                  <strong>w</strong>=(<code>{this.state.vecW.x}</code>,
+                  <code>{this.state.vecW.y}</code>,
+                  <code>{this.state.vecW.z}</code>
+                  ).
+                </li>
+              </ul>
+            </li>
+            <li>
               <strong>Vectores complementarios</strong>:
               <ul>
                 <li>
@@ -646,33 +864,7 @@ class SegundoPrograma extends Component {
               </ul>
             </li>
           </ul>
-          <strong>{this.state.name}:</strong>
-          <ul>
-            <li>
-              <strong>Eje x</strong>: eje rojo.
-            </li>
-            <li>
-              <strong>Eje y</strong>: eje azul.
-            </li>
-            <li>
-              <strong>Eje z</strong>: eje verde.
-            </li>
-            <li>
-              <strong>u</strong>=(<code>{this.state.vecU.x}</code>,
-              <code>{this.state.vecU.y}</code>,<code>{this.state.vecU.z}</code>
-              ).
-            </li>
-            <li>
-              <strong>v</strong>=(<code>{this.state.vecV.x}</code>,
-              <code>{this.state.vecV.y}</code>,<code>{this.state.vecV.z}</code>
-              ).
-            </li>
-            <li>
-              <strong>w</strong>=(<code>{this.state.vecW.x}</code>,
-              <code>{this.state.vecW.y}</code>,<code>{this.state.vecW.z}</code>
-              ).
-            </li>
-          </ul>
+          <h3 className="titulo-grafica">{this.state.name}:</h3>
         </p>
         <div id="grafica-programa-2">
           <i>
