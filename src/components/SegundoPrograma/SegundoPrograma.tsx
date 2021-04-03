@@ -244,8 +244,66 @@ class SegundoPrograma extends Component {
     }
 
     // Dibujar los ejes.
-    const ejes = new THREE.AxesHelper(min);
-    scene.add(ejes);
+
+    // Eje Z.
+    const ejeZPos = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 1, 0).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, min + 0.5, 0).length(),
+      0x00ff00,
+      0.2,
+      0.1
+    );
+    scene.add(ejeZPos);
+    const ejeZNeg = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, -(min + 0.5), 0).length(),
+      0x00ff00,
+      0.2,
+      0.1
+    );
+    scene.add(ejeZNeg);
+
+    // Eje X.
+    const ejeXPos = new THREE.ArrowHelper(
+      new THREE.Vector3(1, 0, 0).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(min + 0.5, 0, 0).length(),
+      0xff0000,
+      0.2,
+      0.1
+    );
+    scene.add(ejeXPos);
+    const ejeXNeg = new THREE.ArrowHelper(
+      new THREE.Vector3(-1, 0, 0).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(-(min + 0.5), 0, 0).length(),
+      0xff0000,
+      0.2,
+      0.1
+    );
+    scene.add(ejeXNeg);
+
+    // Eje Y.
+    const ejeYPos = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 0, 1).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, min + 0.5).length(),
+      0x0000ff,
+      0.2,
+      0.1
+    );
+    scene.add(ejeYPos);
+    const ejeYNeg = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 0, -1).clone().normalize(),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, -(min + 0.5)).length(),
+      0x0000ff,
+      0.2,
+      0.1
+    );
+    scene.add(ejeYNeg);
 
     // Dibujar el grid.
     const grid = new THREE.GridHelper(min * 2, min * 2);
@@ -270,16 +328,58 @@ class SegundoPrograma extends Component {
     // Verificamos si están activadas las etiquetas en los ejes.
     if (this.state.etiquetasEjesActivadas) {
       // Eje x.
-      const etiquetaEjeX = this.crearEtiqueta("x", min, 0, 0, "label-eje");
-      paralelepipedo.add(etiquetaEjeX);
+      const etiquetaEjeXPos = this.crearEtiqueta(
+        "+x",
+        min + 1,
+        0,
+        0,
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeXPos);
+      const etiquetaEjeXNeg = this.crearEtiqueta(
+        "-x",
+        -(min + 1),
+        0,
+        0,
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeXNeg);
 
       // Eje y.
-      const etiquetaEjeY = this.crearEtiqueta("y", 0, min, 0, "label-eje");
-      paralelepipedo.add(etiquetaEjeY);
+      const etiquetaEjeYPos = this.crearEtiqueta(
+        "+y",
+        0,
+        min + 1,
+        0,
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeYPos);
+      const etiquetaEjeYNeg = this.crearEtiqueta(
+        "-y",
+        0,
+        -(min + 1),
+        0,
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeYNeg);
 
       // Eje z.
-      const etiquetaEjeZ = this.crearEtiqueta("z", 0, 0, min, "label-eje");
-      paralelepipedo.add(etiquetaEjeZ);
+      const etiquetaEjeZPos = this.crearEtiqueta(
+        "+z",
+        0,
+        0,
+        min + 1,
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeZPos);
+      const etiquetaEjeZNeg = this.crearEtiqueta(
+        "-z",
+        0,
+        0,
+        -(min + 1),
+        "label-eje"
+      );
+      paralelepipedo.add(etiquetaEjeZNeg);
     }
 
     // Verificamos si están activadas las etiquetas en los vectores.
@@ -336,10 +436,17 @@ class SegundoPrograma extends Component {
     // Verificamos si están activadas las etiquetas en las coordenadas.
     if (this.state.etiquetasCoordenadasActivadas) {
       // Números en los ejes.
-      for (let index = 1; index < min; index++) {
+      for (let index = 1; index <= min; index++) {
         const etiquetaNumX = this.crearEtiqueta(
           String(index),
           index,
+          0,
+          0,
+          "label-eje-numero"
+        );
+        const etiquetaNumXNeg = this.crearEtiqueta(
+          String(index * -1),
+          index * -1,
           0,
           0,
           "label-eje-numero"
@@ -351,6 +458,13 @@ class SegundoPrograma extends Component {
           0,
           "label-eje-numero"
         );
+        const etiquetaNumYNeg = this.crearEtiqueta(
+          String(index * -1),
+          0,
+          index * -1,
+          0,
+          "label-eje-numero"
+        );
         const etiquetaNumZ = this.crearEtiqueta(
           String(index),
           0,
@@ -358,9 +472,19 @@ class SegundoPrograma extends Component {
           index,
           "label-eje-numero"
         );
+        const etiquetaNumZNeg = this.crearEtiqueta(
+          String(index * -1),
+          0,
+          0,
+          index * -1,
+          "label-eje-numero"
+        );
         paralelepipedo.add(etiquetaNumX);
+        paralelepipedo.add(etiquetaNumXNeg);
         paralelepipedo.add(etiquetaNumY);
+        paralelepipedo.add(etiquetaNumYNeg);
         paralelepipedo.add(etiquetaNumZ);
+        paralelepipedo.add(etiquetaNumZNeg);
       }
     }
 
