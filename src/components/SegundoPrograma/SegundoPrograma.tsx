@@ -695,7 +695,7 @@ class SegundoPrograma extends Component {
         <p>
           Programa que recibe tres vectores en el espacio R^3 (tres dimensiones)
           con los cuales se genera un paralelepípedo del cual se calcula su área
-          y su volúmen.
+          y su volumen.
         </p>
         <p>
           <strong>Entradas:</strong>
