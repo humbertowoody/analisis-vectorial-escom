@@ -60,8 +60,11 @@ class SegundoPrograma extends Component {
     maxValue: 5,
     area: 0,
     volumen: 0,
+    figuraSolida: false,
+    colorFigura: 0xff00ff, // Morado cool.
   };
 
+  // Crea una etiqueta para algún elemento de la gráfica.
   crearEtiqueta = (
     nombre: string,
     x: number,
@@ -77,6 +80,16 @@ class SegundoPrograma extends Component {
     return etiqueta;
   };
 
+  // Convierte un color en formato hexadecimal a css.
+  colorHexAColorCSS = (numeroHex: number): string => {
+    return "#" + ("00000" + (numeroHex | 0).toString(16)).substr(-6);
+  };
+
+  // Convierte un color en formato css a un número hexadecimal.
+  colorCSSAColorHex = (colorCSS: string): number => {
+    return parseInt(colorCSS.replace(/^#/, ""), 16);
+  };
+
   // Cada que se actualiza el estado, por ejemplo con la modificación del valor
   // de algún input, se llama a esta función.
   componentDidUpdate() {
@@ -84,7 +97,7 @@ class SegundoPrograma extends Component {
     const { vecU, vecV, vecW, vecWV, vecUW, vecUV, vecUVW } = this.state;
 
     // Arreglo con los vértices de nuestra figura.
-    const vertices = new Float32Array([
+    const vertices: Float32Array = new Float32Array([
       // Triángulo origen -> u ; origen -> v
       0,
       0,
@@ -224,24 +237,18 @@ class SegundoPrograma extends Component {
     // Cámara
     let camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      (window.innerWidth * 0.8) / (window.innerHeight * 0.8),
       0.1,
       1000
     );
     camera.position.y = 5;
     camera.position.z = 15;
-    camera.updateProjectionMatrix();
 
     // Calculamos el tamaño mínimo del grid.
     let min: number = 10;
-
-    if (vecUVW.x > min) {
-      min = vecUVW.x + 1;
-    } else if (vecUVW.y > min) {
-      min = vecUVW.y + 1;
-    } else if (vecUVW.z > min) {
-      min = vecUVW.z + 1;
-    }
+    vertices.forEach((vertice) => {
+      if (vertice > min) min = vertice;
+    });
 
     // Dibujar los ejes.
 
@@ -315,9 +322,12 @@ class SegundoPrograma extends Component {
 
     // Material para el Mesh.
     let material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      wireframe: true,
+      color: this.state.colorFigura,
+      wireframe: !this.state.figuraSolida,
+      reflectivity: 1,
+      refractionRatio: 0.8,
     });
+    material.side = THREE.DoubleSide;
 
     // Mesh
     let paralelepipedo = new THREE.Mesh(geometry, material);
@@ -547,6 +557,23 @@ class SegundoPrograma extends Component {
         maxValue: 5,
         area: 0,
         volumen: 0,
+        figuraSolida: false,
+        colorFigura: 0xff00ff,
+      };
+    });
+  };
+
+  cambiarColorFigura = (e: any) => {
+    this.setState((estadoAnterior) => {
+      // Creamos el nuevo estado.
+      const nuevoEstado: any = estadoAnterior;
+
+      // Colocamos el color de la figura.
+      nuevoEstado.colorFigura = this.colorCSSAColorHex(e.target.value);
+
+      // Regresamos el nuevo estado.
+      return {
+        ...nuevoEstado,
       };
     });
   };
@@ -564,6 +591,8 @@ class SegundoPrograma extends Component {
         nuevoEstado.vecV[e.target.name[1]] = Number(e.target.value);
       } else if (e.target.name[0] === "w") {
         nuevoEstado.vecW[e.target.name[1]] = Number(e.target.value);
+      } else if (e.target.name === "figuraSolida") {
+        nuevoEstado.figuraSolida = !nuevoEstado.figuraSolida;
       } else {
         nuevoEstado[e.target.name] = e.target.value;
       }
@@ -752,6 +781,35 @@ class SegundoPrograma extends Component {
             onChange={this.actualizarCampo}
           />
           ,<button onClick={this.restablecer}>Reestablecer</button>
+        </p>
+        <p>Opciones de renderizado:</p>
+        <div onChange={this.actualizarCampo}>
+          <input
+            checked={this.state.figuraSolida}
+            type="radio"
+            name="figuraSolida"
+            id="figuraSolida"
+            value={"true"}
+          />{" "}
+          Sólido
+          <input
+            checked={!this.state.figuraSolida}
+            type="radio"
+            name="figuraSolida"
+            id="figuraSolida"
+            value={"false"}
+          />{" "}
+          Vértices
+        </div>
+        <p>
+          Color para la figura:{"   "}
+          <input
+            type="color"
+            name="colorFigura"
+            id="colorFigura"
+            value={this.colorHexAColorCSS(this.state.colorFigura)}
+            onChange={this.cambiarColorFigura}
+          />
         </p>
         <p>Etiquetas activadas:</p>
         <p>
