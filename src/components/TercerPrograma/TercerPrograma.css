@@ -1,0 +1,49 @@
+.segundo-programa {
+  padding: 15px;
+}
+
+.segundo-programa button {
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin: 0px 10px;
+  font-family: "Montserrat";
+  background-color: white;
+  font-size: 1em;
+  padding: 5px;
+}
+
+.segundo-programa button:hover {
+  background-color: #333;
+  animation: 0.5s;
+  color: azure;
+}
+
+#grafica-programa-2 {
+  display: flex;
+  justify-content: center;
+}
+
+.titlo-grafica {
+  text-align: center;
+}
+
+.label-eje {
+  color: #fff;
+  font-size: 1.5em;
+  font-family: serif;
+}
+
+.label-eje-numero {
+  color: #fff;
+  font-size: 0.8em;
+  font-family: serif;
+}
+
+.label {
+  color: #fff;
+  margin-top: -1em;
+  font-family: sans-serif;
+  /* font-size: 2em; */
+  padding: 2px;
+  background: rgba(0, 0, 0, 0.6);
+}

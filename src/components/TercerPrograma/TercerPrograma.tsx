@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import * as THREE from "three";
-import "./SegundoPrograma.css";
+import "./TercerPrograma.css";
 import OrbitControls from "three-orbitcontrols";
 import { CSS2DRenderer, CSS2DObject } from "three-css2drenderer";
 
-class SegundoPrograma extends Component {
+class TercerPrograma extends Component {
   // Ejemplos para probar programa más fácilmente.
   private ejemplosPredefinidos = [
     {
@@ -720,23 +720,22 @@ class SegundoPrograma extends Component {
   render() {
     return (
       <div className="segundo-programa">
-        <h1>Programa #2</h1>
+        <h1>Programa #3</h1>
         <p>
-          Programa que recibe tres vectores en el espacio R^3 (tres dimensiones)
-          con los cuales se genera un paralelepípedo del cual se calcula su área
-          y su volumen.
+          Programa que calcula el plano tangente a varias superficies
+          predeterminadas y muestra sus gráficas.
         </p>
         <p>
           <strong>Entradas:</strong>
           <ul>
             <li>
-              <strong>u</strong>: vector de tres dimensiones.
+              <strong>a</strong>: número real.
             </li>
             <li>
-              <strong>v</strong>: vector de tres dimensiones.
+              <strong>b</strong>: número real.
             </li>
             <li>
-              <strong>w</strong>: vector de tres dimensiones.
+              <strong>c</strong>: número real.
             </li>
           </ul>
         </p>
@@ -1063,4 +1062,4 @@ class SegundoPrograma extends Component {
   }
 }
 
-export default SegundoPrograma;
+export default TercerPrograma;
